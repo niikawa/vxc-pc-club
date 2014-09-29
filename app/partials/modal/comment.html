@@ -1,0 +1,32 @@
+<!-- 
+コメント追加用モーダル
+
+入力フォームとして使用する場合は、呼び出し元コントローラーにmakeメソッドを
+作成すること。
+
+[scope]
+comentList {array} 表示するコメントの配列
+comments {string} 入力したコメント
+
+@author niikawa
+-->
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">&times;</button>
+    <img src="images/icon/1408515480_7.png" width="30" height="30">
+    <h3>{{modalParam.header}}</h3>
+</div>
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="arrorw-panel form-group">
+                <textarea placeholder="コメントを入力してください" ng-model="modalParam.newComment"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$close()">Close</button>
+    <button class="btn btn-primary" ng-click="make()">Save changes</button>
+</div>

@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">&times;</button>
+    <h3>{{modalParam.header}}</h3>
+</div>
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <textarea class="form-control" placeholder="タスクを入力してください" ng-model="modalParam.newComment"/>
+            </div>
+        </div>
+    </div>
+    
+    <img ng-if="modalParam.isCollapsed" ng-click="modalParam.isCollapsed = !modalParam.isCollapsed" src="images/icon/arrow_right_top_square_black-32.png"></img>
+    <img ng-if="!modalParam.isCollapsed" ng-click="modalParam.isCollapsed = !modalParam.isCollapsed" src="images/icon/arrow_right_down_square_black-32.png"></img>
+    <div class="row" collapse="!modalParam.isCollapsed">
+        <div class="col-sm-7">
+            
+            <div class="form-group">
+                <textarea class="form-control" row=5 placeholder="コメントを入力してください" ng-model="modalParam.comments"/>
+            </div>
+            
+        </div>
+        <div class="col-sm-5">
+            <rate-directive bind="modalParam.progress" max=10></rate-directive>
+            
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$close()">Close</button>
+    <button class="btn btn-primary" ng-click="makeDetails()">Save</button>
+</div>

@@ -1,0 +1,87 @@
+    <div class="row" ng-controller="MainCtrl" ng-init="initialize()">
+      <div class="col-sm-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">team box
+            <div class="pull-right">
+      
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="card-container" data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}">
+              <div class="card btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-9">
+      
+        <div class="line-container" ng-repeat="user in userList">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-comments fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">8</div>
+                    <div>{{user.my.lastName}}{{user.my.firstName}}</div>
+                    <div class="pull-right">
+                      <img class="" src="images/icon/plus_square_black-32.png"
+                        ng-click="addCard({{$index}})"></img>
+                      <img class="" src="images/icon/write_square_black-32.png"
+                        ng-click="popupDetails({{$index}})"></img>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer clearfix">
+              <div class="card-container" data-drop="true" ng-model='user.taskList' jqyoui-droppable="{multiple:true}">
+                <div class="card btn-draggable" ng-repeat="item in user.taskList track by $index" ng-show="item.contents" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">
+                  <p class="content">{{item.contents}}</p>
+                  <!-- progress  -->
+                  <div class="progress progress-striped active">
+                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{item.progress}}%">
+                      </div>
+                  </div>
+                  <button type="button" class="btn progress-left-image btn-default btn-xs" ng-click="changeProgress({{$parent.$index}},{{$index}},100)">
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <!-- valueをバインドさせる  -->
+                  <rate-directive execute="changeProgress($parent.$parent.$index,$index, '')" bind="item.progress" value={{item.progress|rateFilter:max}} ></rate-directive>
+
+                  <!-- setting menue -->
+                  <div class="setting-list">
+                    <!-- コメント -->
+                    <img class="progress-left-image" src="images/icon/speech-bubble.png" ng-show="item.comments" 
+                      ng-click="getComment({{$parent.$index}},{{$index}})"></img>
+                    <div class="btn-group pull-right">
+                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-chevron-down"></i>
+                      </button>
+                      <ul class="dropdown-menu slidedown">
+                        <li>
+                          <a href="" ng-click="popupDetailsUpdate({{$parent.$index}},{{$index}})">
+                            <i class="fa fa-refresh fa-fw"></i> 編集
+                          </a>
+                        </li>
+                        <li>
+                          <a href="" ng-click="removeCard({{$parent.$index}},{{$index}})">
+                            <i class="fa fa-times fa-fw"></i> 削除
+                          </a>
+                        </li>
+                        <li>
+                          <a href="" ng-click="addComment({{$parent.$index}},{{$index}})">
+                            <i class="fa fa-comment-o fa-fw"></i> コメント
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
