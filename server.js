@@ -6,16 +6,24 @@
 var http = require('http');
 var path = require('path');
 
-var async = require('async');
-var socketio = require('socket.io');
-var express = require('express');
-
 /*
  * DB
  */
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 var db = mongoose.connect(configDB.url);
+
+
+var async = require('async');
+var socketio = require('socket.io');
+var express = require('express');
+
+//express4からは別に取り込まないとダメ
+var bodyParser = require('body-parser');
+var methodOverride = require("method-override");
+var session = require("express-session");
+var cookieParser = require("cookie-parser");
+
 
 /*
  * express
@@ -27,27 +35,27 @@ router.set('view engine', 'html');
 router.set('port', process.env.PORT || 3000);
 router.set('secretKey', configDB.secret);
 router.set('cookieSessionKey', 'sid');
-router.use(express.json());
-router.use(express.urlencoded());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded());
 //app.use(express.bodyParser());
 //router.use(express.bodyParser({uploadDir:'./app/userImage'}));
-router.use(express.methodOverride());
-router.use(express.cookieParser(router.get('secretKey')));
+router.use(methodOverride());
+router.use(cookieParser(router.get('secretKey')));
+router.use(express.static(path.resolve(__dirname, 'app')));
 
 var server = http.createServer(router);
 var io = socketio.listen(server);
-router.use(express.static(path.resolve(__dirname, 'app')));
 
 /*
  * セッション管理
  */
-var Session = express.session.Session;
-var MongoStore = require('connect-mongo')(express);
+//var Session = express.session.Session;
+var MongoStore = require('connect-mongo')(session);
 var sessionStore = new MongoStore({
         mongoose_connection : db.connections[0],
         clear_interval: 60 * 60// Interval in seconds to clear expired sessions. 60 * 60 = 1 hour
 });
-router.use(express.session({
+router.use(session({
     //cookieにexpressのsessionIDを保存する際のキーを設定
     key : router.get('cookieSessionKey'),
     secret: configDB.secret,
@@ -140,5 +148,5 @@ function broadcast(event, data) {
 
 server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
+  console.log("pc-club server listening at", addr.address + ":" + addr.port);
 });

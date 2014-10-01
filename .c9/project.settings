@@ -13,7 +13,7 @@
     },
     "ace": {
         "@newLineMode": "unix",
-        "@tabSize": "4",
+        "@tabSize": 4,
         "@useSoftTabs": "true",
         "@guessTabSize": "true"
     },
